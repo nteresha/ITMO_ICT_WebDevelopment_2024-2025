@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация на гонку</title>
+    {% load static %}
+</head>
+<body>
+    <header>
+        <h2 align="center">Регистрация на гонку</h2>
+    </header>
+
+    <div class="reservation-container">
+        <h3>Новая регистрация!</h3>
+        <hr>
+        <p>Гонка: {{ race.name }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="reservation-actions">
+                <button type="submit" class="reservation-button">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Отзывы о гонке: {{ race.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/review.css' %}">
+</head>
+<body>
+    <header>
+        <h2>Отзывы о гонке: {{ race.name }}</h2>
+        <nav>
+            <a href="{% url 'all_races' %}">Главная</a>
+            {% if user.is_authenticated %}
+                {% if user.user_type == 'racer' and user.racer %}
+                    <a href="{% url 'racer_profile' user.racer.id %}">Аккаунт</a>
+                {% elif user.user_type == 'admin' %}
+                    <a href="{% url 'all_races' %}">Список участников</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Выход</a>
+            {% else %}
+            <a href="{% url 'login' %}">Вход</a>
+            {% endif %}
+            </nav>
+    </header>
+    <section class="race-list">
+        <div class="container">
+            <div class="list-group">
+                {% for comment in comments %}
+                <div class="list-group-item list-group-item-action race-row d-flex justify-content-between align-items-center">
+                    <img src="{% static 'images/racers/icon.png' %}" class="race-icon" alt="{{ race.name }}">
+                    <div>
+                        <h4> <strong>{{ comment.commentator.username }}</strong> ({{ comment.date|date:"d.m.Y H:i" }}) </h4>
+                        <p>{{ comment.text }}</p>
+                        <big>Оценка: {{ comment.rating }}/10</big>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="list-group-item list-group-item-action race-row d-flex justify-content-between align-items-center empty">
+                    <h4>Отзывов пока нет</h4>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</body>
+</html>

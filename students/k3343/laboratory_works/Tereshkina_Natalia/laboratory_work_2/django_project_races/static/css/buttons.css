@@ -1,0 +1,32 @@
+.btn {
+    padding: 5px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.btn-success {
+    background-color: darkgreen;
+    color: white;
+    border: none;
+}
+
+.btn-danger {
+    background-color: darkred;
+    color: white;
+}
+
+.btn-reviews {
+    background-color: darkorange;
+    color: white;
+}
+
+.btn-reviews:hover {
+    background-color: orange;
+    color: white;
+}
+

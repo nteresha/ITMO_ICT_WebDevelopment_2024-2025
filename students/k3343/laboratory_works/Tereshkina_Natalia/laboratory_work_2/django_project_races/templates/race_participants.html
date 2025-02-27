@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/race_participants.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+            line-height: 1.6;
+        }
+        .race-list {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .race-row {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .race-row h4 {
+            font-size: 20px;
+            color: darkred;
+        }
+        .race-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .race-info {
+            flex-grow: 1;
+        }
+        .status-badge {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .status-approved {
+            background-color: darkgreen;
+            color: white;
+        }
+        .status-pending {
+            background-color: darkorange;
+            color: white;
+        }
+        .status-rejected {
+            background-color: darkred;
+            color: white;
+        }
+        .empty {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+        nav a {
+        background-color: #333333;
+        color: white;
+        padding: 5px 20px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 5px;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Список участников гонки: {{ race.name }}</h2>
+        <nav>
+            <a href="{% url 'all_races' %}">Главная</a>
+            {% if user.is_authenticated %}
+                {% if user.user_type == 'racer' and user.racer %}
+                    <a href="{% url 'racer_profile' user.racer.id %}">Аккаунт</a>
+                {% elif user.user_type == 'admin' %}
+                    <a href="{% url 'all_races' %}">Список участников</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Выход</a>
+            {% else %}
+            <a href="{% url 'login' %}">Вход</a>
+            {% endif %}
+            </nav>
+    </header>
+    <section class="race-list container">
+        <div class="list-group">
+            {% for registration in participants %}
+                <div class="list-group-item race-row d-flex align-items-center">
+                    <img src="{% static 'images/racers/icon.png' %}" class="race-icon" alt="{{ registration.racer.full_name }}">
+                    <div class="race-info">
+                        <h4>{{ registration.racer.full_name }} <small class="text-muted">({{ registration.racer.team.name }})</small></h4>
+                    </div>
+                    <span class="status-badge
+                        {% if registration.status == 'approved' %} status-approved
+                        {% elif registration.status == 'pending' %} status-pending
+                        {% elif registration.status == 'rejected' %} status-rejected
+                        {% endif %}">
+                        {{ registration.get_status_display }}
+                    </span>
+                </div>
+            {% empty %}
+                <div class="list-group-item text-center empty">
+                    <h4>Нет зарегистрированных участников</h4>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+</html>

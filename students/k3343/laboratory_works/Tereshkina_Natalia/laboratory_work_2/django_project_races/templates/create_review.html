@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave a Review</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/review.css' %}">
+</head>
+<body>
+    <header>
+        <h2>Отзыв</h2>
+        <nav>
+            <a href="{% url 'all_races' %}">Главная</a>
+            <a href="{% url 'logout' %}">Выйти</a>
+        </nav>
+    </header>
+    <div class="review-container">
+        <h2>Новый отзыв для гонки {{registration.race.name}}</h2>
+        <form method="post" class="review-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="submit-button">Отправить отзыв</button>
+        </form>
+    </div>
+</body>
+</html>
